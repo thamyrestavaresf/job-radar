@@ -128,7 +128,7 @@ def _enviar_heartbeat_diario(
         status = "todas as fontes ok"
 
     enviar_mensagem(
-        f"💓 <b>JobRadar {perfil.nome} ativo</b>\n\n"
+        f"💓 **JobRadar {perfil.nome} ativo**\n\n"
         f"Confirmação diária: o ciclo rodou agora ({hora_brasilia}, {status}). "
         f"{total_novas} vaga(s) nova(s) neste ciclo.\n\n"
         "Se essa mensagem parar de chegar, o workflow parou de rodar — "
@@ -390,7 +390,7 @@ def ciclo_de_busca(perfil: Perfil):
     # com tudo quebrado.
     if scrapers and len(scrapers_com_problema) >= len(scrapers) / 2:
         enviar_mensagem(
-            f"⚠️ <b>JobRadar {perfil.nome} com problema</b>\n\n"
+            f"⚠️ **JobRadar {perfil.nome} com problema**\n\n"
             f"{len(scrapers_com_problema)}/{len(scrapers)} fontes falharam ou voltaram "
             f"vazias neste ciclo: {', '.join(scrapers_com_problema)}.\n\n"
             "Vale checar o log do GitHub Actions."
@@ -461,7 +461,7 @@ def main():
     except BancoVazioSuspeito as e:
         logger.error(str(e))
         nomes = ", ".join(p.nome for p in perfis_selecionados)
-        enviar_mensagem(f"🛑 <b>JobRadar abortado</b>\n\nPerfis desta execução: {nomes}\n\n{e}")
+        enviar_mensagem(f"🛑 **JobRadar abortado**\n\nPerfis desta execução: {nomes}\n\n{e}")
         sys.exit(1)
 
     if args.once:
