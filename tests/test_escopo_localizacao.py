@@ -114,7 +114,7 @@ from core.job import Job                     # noqa: E402
 from core.perfis import PERFIL_BR, PERFIL_INTL  # noqa: E402
 
 
-def _vaga(local, modalidade, titulo="Analista de Dados"):
+def _vaga(local, modalidade, titulo="Analista Financeiro"):
     return Job(
         titulo=titulo, empresa="Empresa Teste", local=local,
         link=f"https://exemplo.com/{abs(hash((local, modalidade, titulo)))}",
@@ -135,15 +135,17 @@ def test_remoto_reconhecido_quando_a_fonte_nao_preenche_modalidade(local):
 
 @pytest.mark.parametrize("local, modalidade", [
     # A fonte declarou a modalidade: texto solto no local NAO sobrepoe.
-    ("Home Office - São Paulo, SP", "Presencial"),
-    ("Remoto (São Paulo, SP)", "Híbrido"),
+    # Curitiba não está em CIDADES (core/config.py), então continua fora
+    # da regra mesmo com a modalidade declarada.
+    ("Home Office - Curitiba, PR", "Presencial"),
+    ("Remoto (Curitiba, PR)", "Híbrido"),
     ("100% Remoto - Curitiba, PR", "Presencial"),
 ])
 def test_texto_do_local_nao_sobrepoe_modalidade_declarada(local, modalidade):
     assert not _vaga(local, modalidade).combina_com(PERFIL_BR.regras)
 
 
-@pytest.mark.parametrize("local", ["São Paulo - SP", "Bloomington, IN", "Remote - US only"])
+@pytest.mark.parametrize("local", ["Curitiba - PR", "Bloomington, IN", "Remote - US only"])
 def test_fallback_de_modalidade_nao_abre_vaga_fora_da_regra(local):
     assert not _vaga(local, "").combina_com(PERFIL_BR.regras)
 
