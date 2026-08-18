@@ -28,6 +28,30 @@ def test_br_hibrido_e_presencial_so_em_sao_paulo_e_santos(cidade, modalidade):
     ).combina_com(PERFIL_BR.regras)
 
 
+@pytest.mark.parametrize("modalidade", ["Híbrido", "Presencial"])
+@pytest.mark.parametrize(
+    "local",
+    [
+        "Recife - PE",
+        "Campina Grande - PB",
+        "João Pessoa - PB",
+        "Natal - RN",
+        "Caruaru - PE",
+        "Manaus - AM",
+        "Maceió - AL",
+        "Aracaju - SE",
+    ],
+)
+def test_br_hibrido_e_presencial_aceito_nas_demais_cidades_da_lista(
+    local, modalidade
+):
+    """CIDADES em core/config.py inclui essas cidades além de SP/Santos —
+    vaga presencial/híbrida nelas deve ser aceita."""
+    assert _vaga(
+        "Analista Financeiro", local, modalidade
+    ).combina_com(PERFIL_BR.regras)
+
+
 @pytest.mark.parametrize(
     "local",
     [
@@ -49,18 +73,17 @@ def test_br_variacoes_de_escrita_das_cidades_aceitas(local):
 @pytest.mark.parametrize(
     "local",
     [
-        "Recife - PE",
         "Rio de Janeiro - RJ",
         "Belo Horizonte - MG",
-        "Campina Grande - PB",
         "Salvador - BA",
         "Curitiba - PR",
-        "Manaus - AM",
     ],
 )
-def test_br_hibrido_e_presencial_fora_de_sao_paulo_e_santos_e_rejeitado(
+def test_br_hibrido_e_presencial_fora_da_lista_de_cidades_e_rejeitado(
     local, modalidade
 ):
+    """Cidades fora da lista CIDADES em core/config.py continuam
+    rejeitadas para presencial/híbrido (só remoto passa para elas)."""
     assert not _vaga(
         "Analista Financeiro", local, modalidade
     ).combina_com(PERFIL_BR.regras)
