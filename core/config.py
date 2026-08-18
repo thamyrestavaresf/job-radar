@@ -322,6 +322,7 @@ DIGEST_HORA_UTC = 9
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
+DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 
 # Caminho ancorado na RAIZ do projeto, não na pasta deste arquivo.
 #
