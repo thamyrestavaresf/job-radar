@@ -3,8 +3,6 @@
 from core.config import (
     CIDADES_EUROPA_IBERICA,
     DB_PATH,
-    TELEGRAM_BOT_TOKEN,
-    TELEGRAM_CHAT_ID,
 )
 
 
