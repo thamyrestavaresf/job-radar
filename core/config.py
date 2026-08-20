@@ -110,6 +110,11 @@ DIGEST_HORA_UTC = 9
 
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
 
+# Descoberta é feita por busca pública e o catálogo fica em SQLite. Este
+# intervalo evita consultar o buscador em cada ciclo, mas não impede que as
+# empresas já conhecidas sejam verificadas a cada execução do JobRadar.
+INHIRE_DESCOBERTA_INTERVALO_HORAS = int(os.getenv("INHIRE_DESCOBERTA_INTERVALO_HORAS", 24))
+
 
 # Banco de dados ancorado na raiz do projeto.
 _RAIZ_PROJETO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
