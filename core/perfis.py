@@ -47,6 +47,7 @@ from core.job import RegrasFiltro
 from scrapers.catho import CathoScraper
 from scrapers.geekhunter import GeekHunterScraper
 from scrapers.gupy import GupyScraper
+from scrapers.inhire import InHireScraper
 from scrapers.indeed import IndeedScraper
 from scrapers.indeed_intl import IndeedIntlScraper
 from scrapers.jobs99 import Jobs99Scraper
@@ -151,6 +152,7 @@ _REGRAS_BR_IBERIA = RegrasFiltro(
 # ainda pra essa combinação (fonte + termos em português) — FREQUENCIA_BAIXA
 # até medir rendimento real.
 _SCRAPERS_BR = [
+    DefinicaoScraper(InHireScraper, FREQUENCIA_ALTA),
     DefinicaoScraper(GupyScraper, FREQUENCIA_ALTA),        # ~2,6% de rendimento
     DefinicaoScraper(LinkedInScraper, FREQUENCIA_ALTA),     # ~8,5% — a melhor fonte de longe
     DefinicaoScraper(SolidesScraper, FREQUENCIA_ALTA),      # ~1,1%
@@ -212,6 +214,7 @@ _REGRAS_INTL_IBERIA = RegrasFiltro(
 # rendimento por fonte ainda que justifique separar em cadência alta/baixa
 # como o perfil BR. Ajustar quando/se tiver dado real.
 _SCRAPERS_INTL = [
+    DefinicaoScraper(InHireScraper, FREQUENCIA_ALTA),
     DefinicaoScraper(LinkedInIntlScraper, FREQUENCIA_ALTA, {"locations": LOCATIONS_INTL}),
     DefinicaoScraper(IndeedIntlScraper, FREQUENCIA_ALTA, {"dominios": DOMINIOS_INDEED_INTL}),
     DefinicaoScraper(WeWorkRemotelyIntlScraper, FREQUENCIA_ALTA),
