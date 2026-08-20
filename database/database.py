@@ -176,6 +176,16 @@ def iniciar_db():
             "CREATE INDEX IF NOT EXISTS idx_vagas_chave_secundaria "
             "ON vagas_vistas (chave_secundaria)"
         )
+        # Catálogo de subdomínios InHire descobertos publicamente. Fica no
+        # mesmo SQLite que já é versionado pelo workflow, sem criar outro
+        # artefato/state para a nova fonte.
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS inhire_empresas (
+                slug TEXT PRIMARY KEY,
+                descoberta_em TEXT DEFAULT CURRENT_TIMESTAMP,
+                vista_em TEXT DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
         # Tabela chave/valor genérica — usada hoje só pra guardar a data do
         # último heartbeat diário (ver notifier/telegram.py e main.py), mas
         # serve pra qualquer estado simples que precise sobreviver entre
@@ -315,4 +325,21 @@ def marcar_digest_enviado(perfil_chave: str):
         conn.execute(
             "UPDATE vagas_vistas SET digest_pendente = 0 WHERE perfil = ? AND digest_pendente = 1",
             (perfil_chave,),
+        )
+
+
+def listar_empresas_inhire() -> list[str]:
+    with _conectar() as conn:
+        return [linha[0] for linha in conn.execute("SELECT slug FROM inhire_empresas ORDER BY slug")]
+
+
+def salvar_empresas_inhire(slugs: list[str]):
+    """Insere descobertas sem duplicar e atualiza a última confirmação."""
+    if not slugs:
+        return
+    with _conectar() as conn:
+        conn.executemany(
+            "INSERT INTO inhire_empresas (slug) VALUES (?) "
+            "ON CONFLICT(slug) DO UPDATE SET vista_em = CURRENT_TIMESTAMP",
+            [(slug,) for slug in sorted(set(slugs))],
         )
