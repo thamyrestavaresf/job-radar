@@ -109,6 +109,7 @@ LIMIAR_DIGEST_IMEDIATO = 7
 DIGEST_HORA_UTC = 9
 
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL", "")
+INHIRE_DESCOBERTA_INTERVALO_HORAS = int(os.getenv("INHIRE_DESCOBERTA_INTERVALO_HORAS", 24))
 
 # Descoberta é feita por busca pública e o catálogo fica em SQLite. Este
 # intervalo evita consultar o buscador em cada ciclo, mas não impede que as
